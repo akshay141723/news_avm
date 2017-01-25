@@ -1,0 +1,27 @@
+create database final_sem_project_schema;
+
+use final_sem_project_schema;
+
+create table unresolved_newstype_table(id int primary key not null auto_increment, news_type_name varchar(50) unique not null);
+
+create table resolved_newstype_table(id int primary key not null auto_increment, news_type_name varchar(50) unique not null);
+
+create table nation_table(id int primary key auto_increment not null, nation_name varchar(30) unique);
+
+create table state_table(id int primary key auto_increment not null, state_name varchar(30) unique);
+
+create table city_table(id int primary key auto_increment not null, city_name varchar(30) unique);
+
+create table source_table(id int primary key auto_increment,source_name varchar(50) unique);
+
+create table article_table(id int primary key auto_increment,title varchar(100) unique, source_id int , foreign key(source_id) references source_table(id), article_url varchar(50));
+
+create table unresolved_news_location_table(id int primary key not null Auto_increment,nation_id int,state_id int,city_id int,article_id int,foreign key(nation_id) references nation_table(id),foreign key(state_id) references state_table(id),foreign key(city_id) references city_table(id),foreign key(article_id) references article_table(id));
+
+create table resolved_news_location_table(id int primary key not null Auto_increment,nation_id int,state_id int,city_id int,article_id int,foreign key(nation_id) references nation_table(id),foreign key(state_id) references state_table(id),foreign key(city_id) references city_table(id),foreign key(article_id) references article_table(id));
+
+create table author_table(id int primary key not null Auto_increment,author_name varchar(50),source_id int ,foreign key(source_id) references source_table(id));
+
+create table master_content_table(id int primary key not null Auto_increment,article_id int , foreign key(article_id) references article_table(id), newstype_id int,foreign key(newstype_id) references resolved_newstype_table(id), content longtext not null, news_location_id int null, foreign key(news_location_id) references resolved_news_location_table(id), date date,author_id int, foreign key(author_id) references author_table(id), source_id int ,foreign key(source_id) references source_table(id));
+
+create table map_newslocation_newstype_table(id int primary key Auto_increment, newstype_id int, news_location_id int, foreign key(newstype_id) references resolved_newstype_table(id), foreign key(news_location_id) references resolved_news_location_table(id));
